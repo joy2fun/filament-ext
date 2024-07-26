@@ -22,4 +22,9 @@ class FilamentExtServiceProvider extends PackageServiceProvider
             ->hasMigration('create_filament_ext_table')
             ->hasCommand(FilamentExtCommand::class);
     }
+
+    public function boot()
+    {
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'filament-ext');
+    }
 }
