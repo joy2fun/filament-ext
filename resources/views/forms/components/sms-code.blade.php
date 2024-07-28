@@ -6,7 +6,7 @@
 			mobile: '{{$mobile ?? ''}}',
 			count: 0,
 			get label() {
-				return this.count ? `${this.count} 秒后可再次发送` : '发送验证码';
+				return this.count > 0 ? `${this.count} 秒后可再次发送` : '发送验证码';
 			},
 			countDown() {
 				if (this.count > 0) return;
@@ -14,25 +14,28 @@
 				$wire.sendSmsCode(this.mobile);
 				let timer = setInterval(() => (--this.count <= 0) && clearInterval(timer), 1000)
 			}
-		}">
+		}"
+		@reset-count.window="count=0">
 
-		<div class="pt-3">
-			<x-filament::input.wrapper>
-				<x-filament::input type="text" x-model="mobile" placeholder="输入手机号码" />
-			</x-filament::input.wrapper>
-		</div>
-		<div class="pt-3">
+		<x-filament::input.wrapper>
+			<x-filament::input type="text" x-model="mobile" placeholder="输入手机号码" />
+		</x-filament::input.wrapper>
+		<div class="py-3">
+			@if ($suffixButton ?? false)
 			<x-filament::input.wrapper>
 				<x-filament::input type="text" wire:model="{{ $getStatePath() }}" placeholder="输入手机验证码" />
 				<x-slot name="suffix">
-					<button type="button" :disabled="count > 0" x-text="label" @click="countDown"></button>
+					<button type="button" :disabled="count > 0" x-text="label" @click.throttle.1000ms="countDown"></button>
 				</x-slot>
 			</x-filament::input.wrapper>
-			{{--
-				<x-filament::button color="gray" x-bind:class="{'opacity-50': count > 0}" @click="countDown" x-text="label" />
-				<x-filament::button color="gray" disabled x-show="count" x-text="label" />
-				<x-filament::button @click="countDown" x-show="!count" x-text="label" />
-			--}}
+			@else
+			<div class="flex gap-2">
+				<x-filament::input.wrapper>
+					<x-filament::input type="text" wire:model="{{ $getStatePath() }}" placeholder="输入手机验证码" />
+				</x-filament::input.wrapper>
+				<x-filament::button color="gray" x-bind:class="{'opacity-50': count > 0}" @click.throttle.1000ms="countDown" x-text="label" />
+			</div>
+			@endif
 		</div>
 	</div>
 </x-dynamic-component>
