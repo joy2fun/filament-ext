@@ -21,7 +21,7 @@
 			<x-filament::input type="text" x-model="mobile" placeholder="输入手机号码" />
 		</x-filament::input.wrapper>
 		<div class="py-3">
-			@if ($suffixButton ?? false)
+			@if ($suffix_button ?? false)
 			<x-filament::input.wrapper>
 				<x-filament::input type="text" wire:model="{{ $getStatePath() }}" placeholder="输入手机验证码" />
 				<x-slot name="suffix">

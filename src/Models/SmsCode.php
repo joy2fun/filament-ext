@@ -41,7 +41,7 @@ class SmsCode extends Model
             ->first();
 
         if ($row) {
-            return max(0, $row->created_at->diffInSeconds(now()->addSeconds(-59)));
+            return max(0, 60 - (now()->unix() - $row->created_at->unix()) );
         }
 
         return 0;

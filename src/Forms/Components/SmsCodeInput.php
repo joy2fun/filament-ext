@@ -10,7 +10,7 @@ class SmsCodeInput extends Field
 
     public function suffixButton($bool = true)
     {
-        $this->viewData(['suffixButton' => $bool]);
+        $this->viewData(['suffix_button' => $bool]);
 
         return $this;
     }
