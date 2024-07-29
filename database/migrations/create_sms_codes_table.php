@@ -8,11 +8,11 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('filament_ext_table', function (Blueprint $table) {
+        Schema::create('sms_codes', function (Blueprint $table) {
             $table->id();
-
-            // add fields
-
+            $table->string('mobile', 15)->default('');
+            $table->unsignedInteger('code')->nullable();
+            $table->timestamp('expired_at')->nullable();
             $table->timestamps();
         });
     }

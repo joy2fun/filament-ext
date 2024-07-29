@@ -1,8 +1,8 @@
 <x-dynamic-component
 	:component="$getFieldWrapperView()"
 	:field="$field">
-	<div x-data="
-		{
+	<div
+		x-data="{
 			mobile: '{{$mobile ?? ''}}',
 			count: 0,
 			get label() {
@@ -15,8 +15,8 @@
 				let timer = setInterval(() => (--this.count <= 0) && clearInterval(timer), 1000)
 			}
 		}"
-		@reset-count.window="count=0">
-
+		@sms-code-reset-count.window="count=$event.detail.count"
+		>
 		<x-filament::input.wrapper>
 			<x-filament::input type="text" x-model="mobile" placeholder="输入手机号码" />
 		</x-filament::input.wrapper>
