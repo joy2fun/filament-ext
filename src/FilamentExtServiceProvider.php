@@ -24,5 +24,4 @@ class FilamentExtServiceProvider extends PackageServiceProvider
             ])
             ->hasCommand(FilamentExtCommand::class);
     }
-
 }

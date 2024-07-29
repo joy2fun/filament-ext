@@ -63,7 +63,7 @@ class SmsCode extends Model
             if (is_callable(static::$createdCallback)) {
                 call_user_func(static::$createdCallback, $model);
             } else {
-                throw new Exception("config sender via SmsCode::using()");
+                throw new Exception('config sender via SmsCode::using()');
             }
         });
     }

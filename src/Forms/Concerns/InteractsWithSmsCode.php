@@ -8,7 +8,6 @@ use Joy2fun\FilamentExt\Models\SmsCode;
 
 trait InteractsWithSmsCode
 {
-
     public function sendSmsCode(string $mobile)
     {
         $seconds = SmsCode::canSendAfter($mobile);
