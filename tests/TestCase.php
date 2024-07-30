@@ -3,6 +3,7 @@
 namespace Joy2fun\FilamentExt\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 use Joy2fun\FilamentExt\FilamentExtServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -28,9 +29,9 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_filament-ext_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/create_sms_codes_table.php';
         $migration->up();
-        */
+
+        Model::unguard();
     }
 }
