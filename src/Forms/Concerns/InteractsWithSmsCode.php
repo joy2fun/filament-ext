@@ -16,6 +16,7 @@ trait InteractsWithSmsCode
                 ->title('无效的手机号')
                 ->warning()
                 ->send();
+
             return;
         }
 
@@ -25,6 +26,7 @@ trait InteractsWithSmsCode
                 ->title('操作太频繁，请稍后再试')
                 ->warning()
                 ->send();
+
             return;
         }
 
