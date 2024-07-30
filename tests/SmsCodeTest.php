@@ -1,7 +1,7 @@
 <?php
 
-use Joy2fun\FilamentExt\Models\SmsCode;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Joy2fun\FilamentExt\Models\SmsCode;
 
 uses(RefreshDatabase::class);
 

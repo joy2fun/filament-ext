@@ -17,7 +17,7 @@ class SmsCode extends Model
 
     protected static $createdCallback;
 
-    public static function using(null|\Closure $callback)
+    public static function using(?\Closure $callback)
     {
         static::$createdCallback = $callback;
     }
