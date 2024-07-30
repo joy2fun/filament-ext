@@ -15,12 +15,23 @@ use Joy2fun\FilamentExt\Forms\Concerns\InteractsWithSmsCode;
 
 use input in filament form
 ```php
-Joy2fun\FilamentExt\Forms\Components\SmsCodeInput::make('code')
-    ->viewData([
-        'mobile' => $mobile // 默认填入手机号
-    ])
-    // ->suffixButton()
-    ;
+[
+    TextInput::make('phone')
+        ->regex('/^\d{10,15}$/')
+        ->rules(['required'])
+        ->label('手机号'),
+    SmsCodeInput::make('code')
+        ->mobileField('phone')
+        ->dehydrated(false)
+        ->regex('/^\d{4,6}$/')
+        ->label('验证码')
+        ->rules([
+            'required',
+            fn(Get $get): \Closure => function (string $attribute, $value, \Closure $fail) use ($get) {
+                SmsCode::attempt($get('phone') ?? '', $value) or $fail('验证码无效');
+            },
+        ]),
+]
 ```
 
 verify the mobile and code pair

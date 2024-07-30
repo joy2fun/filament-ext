@@ -14,4 +14,11 @@ class SmsCodeInput extends Field
 
         return $this;
     }
+
+    public function mobileField(string $field = 'mobile')
+    {
+        $this->viewData(['mobile_field' => $field]);
+
+        return $this;
+    }
 }

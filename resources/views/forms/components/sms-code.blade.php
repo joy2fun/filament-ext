@@ -3,7 +3,7 @@
 	:field="$field">
 	<div
 		x-data="{
-			mobile: '{{$mobile ?? ''}}',
+			mobile: $wire.$entangle('data.{{ $mobile_field ?? 'mobile' }}'),
 			count: 0,
 			get label() {
 				return this.count > 0 ? `${this.count} 秒后可再次发送` : '发送验证码';
@@ -11,16 +11,14 @@
 			countDown() {
 				if (this.count > 0) return;
 				this.count = 60;
-				$wire.sendSmsCode(this.mobile);
+				$wire.sendSmsCode(this.mobile || '');
 				let timer = setInterval(() => (--this.count <= 0) && clearInterval(timer), 1000)
 			}
 		}"
 		@sms-code-reset-count.window="count=$event.detail.count"
 		>
-		<x-filament::input.wrapper>
-			<x-filament::input type="text" x-model="mobile" placeholder="输入手机号码" />
-		</x-filament::input.wrapper>
-		<div class="py-3">
+		<x-filament::input type="hidden" x-model="mobile" />
+		<div class="">
 			@if ($suffix_button ?? false)
 			<x-filament::input.wrapper>
 				<x-filament::input type="text" wire:model="{{ $getStatePath() }}" placeholder="输入手机验证码" />
@@ -29,7 +27,7 @@
 				</x-slot>
 			</x-filament::input.wrapper>
 			@else
-			<div class="flex gap-2">
+			<div class="flex flex-wrap gap-2">
 				<x-filament::input.wrapper>
 					<x-filament::input type="text" wire:model="{{ $getStatePath() }}" placeholder="输入手机验证码" />
 				</x-filament::input.wrapper>
