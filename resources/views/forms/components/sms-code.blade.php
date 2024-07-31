@@ -9,6 +9,10 @@
 				return this.count > 0 ? `${this.count} 秒后可再次发送` : '发送验证码';
 			},
 			countDown() {
+				if (String(this.mobile).length < 11) {
+					new FilamentNotification().title('无效的手机号').warning().send()
+					return;
+				}
 				if (this.count > 0) return;
 				this.count = 60;
 				$wire.sendSmsCode(this.mobile || '');
@@ -16,6 +20,8 @@
 			}
 		}"
 		@sms-code-reset-count.window="count=$event.detail.count"
+		@sms-code-sent.window="new FilamentNotification().title('已发送').success().send()"
+		@sms-code-sent-failed.window="count=0;new FilamentNotification().title('发送失败').body($event.detail.message).danger().send()"
 		>
 		<x-filament::input type="hidden" x-model="mobile" />
 		<div class="">

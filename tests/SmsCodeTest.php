@@ -11,7 +11,7 @@ it('throws when missing sender', function () {
 })->throws(\Exception::class);
 
 it('can generate code', function () {
-    $mobile = time();
+    $mobile = '1' . time(); // 11位
     $new = null;
     SmsCode::using(function ($model) use (&$new) {
         $new = $model;
@@ -21,7 +21,7 @@ it('can generate code', function () {
     expect(SmsCode::canSendAfter($mobile))
         ->toBeLessThanOrEqual(60)
         ->toBeGreaterThan(50);
-    expect(SmsCode::attempt($mobile, $new->code))->toBeTrue();
+    expect(SmsCode::attempt($mobile, $new?->code))->toBeTrue();
 });
 
 it('can regenerate code', function () {

@@ -49,6 +49,14 @@ class SmsCode extends Model
 
     public static function attempt(string $mobile, string $code): bool
     {
+        if (strlen($mobile) < 11) {
+            return false;
+        }
+
+        if (strlen($code) < 6) {
+            return false;
+        }
+
         return self::where('mobile', $mobile)
             ->where('code', $code)
             ->where('expired_at', '>', now())

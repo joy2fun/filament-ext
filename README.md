@@ -40,3 +40,22 @@ if (!Joy2fun\FilamentExt\Models\SmsCode::attempt($mobile, $code)) {
     // 验证码错误
 }
 ```
+
+
+## popup captcha
+
+```php
+use Joy2fun\FilamentExt\Forms\Concerns\InteractsWithCaptcha;
+```
+
+include blade view
+```blade
+@include('filament-ext::components.captcha')
+```
+
+captcha free minutes if passed validation
+```php
+config([
+    'filament-ext.captcha_free_minutes' => 10,
+])
+```
