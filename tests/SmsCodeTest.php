@@ -11,7 +11,7 @@ it('throws when missing sender', function () {
 })->throws(\Exception::class);
 
 it('can generate code', function () {
-    $mobile = '1' . time(); // 11位
+    $mobile = '1'.time(); // 11位
     $new = null;
     SmsCode::using(function ($model) use (&$new) {
         $new = $model;

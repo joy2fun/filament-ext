@@ -10,14 +10,16 @@ trait InteractsWithSmsCode
     public function sendSmsCode(string $mobile)
     {
         // popup captcha if necessary
-        if (method_exists($this, 'captchaShouldPass') && !$this->captchaShouldPass()) {
+        if (method_exists($this, 'captchaShouldPass') && ! $this->captchaShouldPass()) {
             $this->popupCaptcha();
             $this->dispatch('sms-code-reset-count', count: 0);
+
             return;
         }
 
         if ($seconds = SmsCode::canSendAfter($mobile)) {
             $this->dispatch('sms-code-reset-count', count: $seconds);
+
             return;
         }
 
