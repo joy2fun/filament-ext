@@ -56,5 +56,4 @@ class SmsCode extends Model
             ->where('expired_at', '>', now())
             ->exists();
     }
-
 }

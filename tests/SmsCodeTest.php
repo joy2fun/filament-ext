@@ -7,12 +7,12 @@ uses(RefreshDatabase::class);
 
 it('throws', function () {
     SmsCode::generate('123', function (string $mobile, string $code) {
-        throw new Exception("send failed");
+        throw new Exception('send failed');
     });
 })->throws(Exception::class);
 
 it('can generate code', function () {
-    $mobile = '1' . time(); // 11位
+    $mobile = '1'.time(); // 11位
     $newCode = '';
     SmsCode::generate($mobile, function (string $mobile, string $code) use (&$newCode) {
         $newCode = $code;

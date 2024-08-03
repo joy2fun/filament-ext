@@ -11,7 +11,7 @@ trait InteractsWithSmsCode
 {
     public function getSmsCodeSender(): Closure
     {
-        return function(string $mobile, string $code) {
+        return function (string $mobile, string $code) {
             throw new Exception('missing getSmsCodeSender(): fn(string $mobile, string $code) => send_sms($mobile, $code)');
         };
     }
