@@ -5,23 +5,23 @@ use Joy2fun\FilamentExt\Models\SmsCode;
 
 uses(RefreshDatabase::class);
 
-it('throws when missing sender', function () {
-    SmsCode::using(null);
-    SmsCode::generate('123');
-})->throws(\Exception::class);
+it('throws', function () {
+    SmsCode::generate('123', function (string $mobile, string $code) {
+        throw new Exception("send failed");
+    });
+})->throws(Exception::class);
 
 it('can generate code', function () {
-    $mobile = '1'.time(); // 11位
-    $new = null;
-    SmsCode::using(function ($model) use (&$new) {
-        $new = $model;
+    $mobile = '1' . time(); // 11位
+    $newCode = '';
+    SmsCode::generate($mobile, function (string $mobile, string $code) use (&$newCode) {
+        $newCode = $code;
     });
-    SmsCode::generate($mobile);
     $this->assertDatabaseHas('sms_codes', ['mobile' => $mobile]);
     expect(SmsCode::canSendAfter($mobile))
         ->toBeLessThanOrEqual(60)
         ->toBeGreaterThan(50);
-    expect(SmsCode::attempt($mobile, $new?->code))->toBeTrue();
+    expect(SmsCode::attempt($mobile, $newCode))->toBeTrue();
 });
 
 it('can regenerate code', function () {

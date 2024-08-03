@@ -2,7 +2,7 @@
 
 namespace Joy2fun\FilamentExt\Models;
 
-use Exception;
+use Closure;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -15,22 +15,16 @@ class SmsCode extends Model
         'expired_at' => 'datetime',
     ];
 
-    protected static $createdCallback;
-
-    public static function using(?\Closure $callback)
+    public static function generate(string $mobile, Closure $sender)
     {
-        static::$createdCallback = $callback;
-    }
-
-    public static function generate(string $mobile)
-    {
-        DB::transaction(function () use ($mobile) {
+        DB::transaction(function () use ($mobile, $sender) {
             $row = new self([
                 'mobile' => $mobile,
                 'code' => rand(100000, 999999),
                 'expired_at' => now()->addMinutes(10),
             ]);
             $row->save();
+            call_user_func($sender, $row->mobile, $row->code);
         });
     }
 
@@ -63,16 +57,4 @@ class SmsCode extends Model
             ->exists();
     }
 
-    protected static function booted(): void
-    {
-        parent::boot();
-
-        static::created(function (SmsCode $model) {
-            if (is_callable(static::$createdCallback)) {
-                call_user_func(static::$createdCallback, $model);
-            } else {
-                throw new Exception('config sender via SmsCode::using()');
-            }
-        });
-    }
 }

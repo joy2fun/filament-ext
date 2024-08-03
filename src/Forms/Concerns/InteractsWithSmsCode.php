@@ -2,11 +2,20 @@
 
 namespace Joy2fun\FilamentExt\Forms\Concerns;
 
+use Closure;
 use Exception;
 use Joy2fun\FilamentExt\Models\SmsCode;
+use Throwable;
 
 trait InteractsWithSmsCode
 {
+    public function getSmsCodeSender(): Closure
+    {
+        return function(string $mobile, string $code) {
+            throw new Exception('missing getSmsCodeSender(): fn(string $mobile, string $code) => send_sms($mobile, $code)');
+        };
+    }
+
     public function sendSmsCode(string $mobile)
     {
         // popup captcha if necessary
@@ -26,9 +35,9 @@ trait InteractsWithSmsCode
         // notification may trigger twice for full page components
         // dispatch events to trigger notification
         try {
-            SmsCode::generate($mobile);
+            SmsCode::generate($mobile, $this->getSmsCodeSender());
             $this->dispatch('sms-code-sent');
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             report($e);
             $this->dispatch('sms-code-sent-failed', message: $e->getMessage());
         }

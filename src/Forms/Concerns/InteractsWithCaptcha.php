@@ -39,6 +39,7 @@ trait InteractsWithCaptcha
             $this->captchaTips = '验证失败，请重新输入';
         } else {
             $this->dispatch('close-modal', id: 'captcha');
+            $this->dispatch('captcha-passed');
             $this->captchaTips = '输入验证码';
             session(['captcha_passed_at' => now()->unix()]);
         }

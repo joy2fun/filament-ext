@@ -1,16 +1,17 @@
 ## sms code
 
-config sender method:
-```php
-Joy2fun\FilamentExt\Models\SmsCode::using(function(SmsCode $model) {
-    // 发送短信
-    // sendSms($model->mobile, $model->code);
-});
-```
-
 use trait in livewire component:
 ```php
 use Joy2fun\FilamentExt\Forms\Concerns\InteractsWithSmsCode;
+
+// setup a sender
+public function getSmsCodeSender(): Closure
+{
+    return function(string $mobile, string $code) {
+        // send sms 
+        Log::debug("sms sent", func_get_args());
+    };
+}
 ```
 
 use input in filament form
@@ -33,14 +34,6 @@ use input in filament form
         ]),
 ]
 ```
-
-verify the mobile and code pair
-```php
-if (!Joy2fun\FilamentExt\Models\SmsCode::attempt($mobile, $code)) {
-    // 验证码错误
-}
-```
-
 
 ## popup captcha
 
