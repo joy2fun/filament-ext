@@ -7,7 +7,6 @@
 		@sms-code-sent-failed.window="sendFailed"
 		@captcha-passed.window="send"
 		>
-		<x-filament::inputhidden" x-model="mobile" />
 		<div class="">
 			@if ($suffix_button ?? false)
 			<x-filament::input.wrapper>
