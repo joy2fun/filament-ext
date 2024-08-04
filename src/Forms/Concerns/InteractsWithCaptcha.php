@@ -4,43 +4,37 @@ namespace Joy2fun\FilamentExt\Forms\Concerns;
 
 trait InteractsWithCaptcha
 {
-    public $captchaTips = '输入验证码';
-
-    public $captchaCode;
-
-    public function captchaFreeMinutes(): int
+    protected function captchaFreeMinutes(): int
     {
         return config('filament-ext.captcha_free_minutes', 10);
     }
 
-    public function captchaShouldPass()
+    protected function captchaShouldPass()
     {
         return now()->subMinutes($this->captchaFreeMinutes())->unix() <= session('captcha_passed_at', 0);
     }
 
-    public function popupCaptcha()
+    protected function popupCaptcha()
     {
+        $this->dispatch('captcha-load', url: captcha_src());
         $this->dispatch('open-modal', id: 'captcha');
     }
 
-    public function reloadCaptcha()
+    public function realodCaptcha()
     {
-        $this->captchaCode = '';
-        $this->captchaTips = '输入验证码';
+        $this->dispatch('captcha-load', url: captcha_src());
     }
 
-    public function checkCaptcha()
+    public function checkCaptcha($code)
     {
         $rules = ['captcha' => 'required|captcha'];
-        $validator = validator()->make(['captcha' => $this->captchaCode], $rules);
-        $this->captchaCode = '';
+        $validator = validator()->make(['captcha' => $code], $rules);
 
         if ($validator->fails()) {
-            $this->captchaTips = '验证失败，请重新输入';
+            $this->dispatch('captcha-failed', url: captcha_src());
         } else {
             $this->dispatch('close-modal', id: 'captcha');
             $this->dispatch('captcha-passed');
-            $this->captchaTips = '输入验证码';
             session(['captcha_passed_at' => now()->unix()]);
         }
     }
