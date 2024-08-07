@@ -1,3 +1,4 @@
+@once
 <x-filament::modal id="captcha">
 	<x-slot name="heading">
 		请完成验证后再继续
@@ -17,3 +18,4 @@
 		</div>
 	</div>
 </x-filament::modal>
+@endonce

@@ -52,3 +52,20 @@ config([
     'filament-ext.captcha_free_minutes' => 10,
 ])
 ```
+
+## modal alert message
+
+include blade view
+```blade
+@include('filament-ext::components.alert')
+```
+
+from server:
+```php
+$this->dispatch('alert', message: 'something wrong');
+```
+
+from alpine js:
+```js
+$dispatch('alert', {message: 'something wrong'})
+```
