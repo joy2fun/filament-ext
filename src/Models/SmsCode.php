@@ -15,9 +15,12 @@ class SmsCode extends Model
         'expired_at' => 'datetime',
     ];
 
+    /**
+     * @return SmsCode
+     */
     public static function generate(string $mobile, Closure $sender)
     {
-        DB::transaction(function () use ($mobile, $sender) {
+        return DB::transaction(function () use ($mobile, $sender) {
             $row = new self([
                 'mobile' => $mobile,
                 'code' => rand(100000, 999999),
@@ -25,6 +28,7 @@ class SmsCode extends Model
             ]);
             $row->save();
             call_user_func($sender, $row->mobile, $row->code);
+            return $row;
         });
     }
 
