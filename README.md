@@ -46,6 +46,14 @@ include blade view
 @include('filament-ext::components.captcha')
 ```
 
+popup captcha modal and halt
+```php
+if (!$this->captchaShouldPass()) {
+    $this->popupCaptcha();
+    return ;
+}
+```
+
 captcha free minutes if passed validation
 ```php
 config([

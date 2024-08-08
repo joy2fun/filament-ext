@@ -11,7 +11,7 @@ trait InteractsWithCaptcha
 
     protected function captchaShouldPass()
     {
-        return now()->subMinutes($this->captchaFreeMinutes())->unix() <= session('captcha_passed_at', 0);
+        return config('captcha.disable', false) || now()->subMinutes($this->captchaFreeMinutes())->unix() <= session('captcha_passed_at', 0);
     }
 
     protected function popupCaptcha()
