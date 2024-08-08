@@ -39,9 +39,9 @@ trait InteractsWithSmsCode
         try {
             $row = SmsCode::generate($mobile, $this->getSmsCodeSender());
             if (App::environment(['local', 'testing'])) {
-                $this->dispatch('sms-code-sent', message: '已发送，测试环境自动填入验证码', code: $row->code );
+                $this->dispatch('sms-code-sent', message: '已发送，测试环境自动填入验证码', code: $row->code);
             } else {
-                $this->dispatch('sms-code-sent', message: '已发送' );
+                $this->dispatch('sms-code-sent', message: '已发送');
             }
         } catch (Throwable $e) {
             report($e);

@@ -28,6 +28,7 @@ class SmsCode extends Model
             ]);
             $row->save();
             call_user_func($sender, $row->mobile, $row->code);
+
             return $row;
         });
     }
